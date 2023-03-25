@@ -18,7 +18,7 @@ public class UpdateViewCountJob {
     private RedisCache redisCache;
     @Autowired
     private ArticleService articleService;
-    @Scheduled
+    @Scheduled(cron = "0 1 * * * ?")
     public void UpdateViewCount(){
         //获取redis中的浏览量
         Map<String, Integer> viewCountMap = redisCache.getCacheMap(SystemConstants.ARTICLE_VIEWCOUNT);
@@ -30,6 +30,7 @@ public class UpdateViewCountJob {
                             return new Article(entry.getKey(),entry.getValue());
                         }
                     });
+        System.out.println("test1");
         //更新到数据库中
         articleService.updateBatchById(null);
     }
