@@ -1,0 +1,4 @@
+com\Controller\LinkController.class
+com\Controller\ArticleController.class
+com\Controller\CategoryController.class
+com\TbBlogApplication.class
