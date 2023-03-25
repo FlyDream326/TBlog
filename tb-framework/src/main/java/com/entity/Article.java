@@ -58,6 +58,8 @@ public class Article  {
     private Integer delFlag;
 
 
+    public Article(String key, Integer value) {
 
     }
+}
 

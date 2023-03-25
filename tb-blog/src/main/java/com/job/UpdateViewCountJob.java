@@ -29,8 +29,8 @@ public class UpdateViewCountJob {
                         public Article apply(Map.Entry<String, Integer> entry) {
                             return new Article(entry.getKey(),entry.getValue());
                         }
-                    })
+                    });
         //更新到数据库中
-        articleService.updateBatchById()
+        articleService.updateBatchById(null);
     }
 }
