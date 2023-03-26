@@ -13,7 +13,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="tb-blog" target="1.8" />
       <module name="tb-framework" target="1.8" />
       <module name="TBlogger" target="1.8" />
     </bytecodeTargetLevel>
