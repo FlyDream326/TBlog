@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 
@@ -18,20 +20,19 @@ public class UpdateViewCountJob {
     private RedisCache redisCache;
     @Autowired
     private ArticleService articleService;
-    @Scheduled(cron = "0 1 * * * ?")
-    public void UpdateViewCount(){
+
+    @Scheduled(cron = "0/15 * * * * ?")
+    public void UpdateViewCount() {
         //获取redis中的浏览量
         Map<String, Integer> viewCountMap = redisCache.getCacheMap(SystemConstants.ARTICLE_VIEWCOUNT);
-        viewCountMap.entrySet()
-                    .stream()
-                    .map(new Function<Map.Entry<String, Integer>, Article>() {
-                        @Override
-                        public Article apply(Map.Entry<String, Integer> entry) {
-                            return new Article(entry.getKey(),entry.getValue());
-                        }
-                    });
-        System.out.println("test1");
+        List<Article> list = viewCountMap.entrySet()
+                .stream()
+                .map(entry -> new Article(Long.valueOf(entry.getKey()), entry.getValue().longValue()))
+                .collect(Collectors.toList());
         //更新到数据库中
-        articleService.updateBatchById(null);
+
+        articleService.updateBatchById(list);
+        System.out.println("更新到数据库中");
+
     }
 }
