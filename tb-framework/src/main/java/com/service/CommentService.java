@@ -1,8 +1,8 @@
 package com.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.common.ResponseResult;
-import com.entity.Comment;
+import com.domain.ResponseResult;
+import com.domain.entity.Comment;
 
 
 /**

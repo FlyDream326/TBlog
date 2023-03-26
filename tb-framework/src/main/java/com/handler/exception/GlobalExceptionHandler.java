@@ -1,6 +1,6 @@
 package com.handler.exception;
 
-import com.common.ResponseResult;
+import com.domain.ResponseResult;
 import com.enums.AppHttpCodeEnum;
 import com.exception.SystemException;
 import lombok.extern.slf4j.Slf4j;

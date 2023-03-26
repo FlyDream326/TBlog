@@ -1,6 +1,6 @@
 package com.service;
 
-import com.common.ResponseResult;
+import com.domain.ResponseResult;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UpLoadService {

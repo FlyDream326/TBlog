@@ -1,4 +1,4 @@
-package com.vo;
+package com.domain.vo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package com.handler.security;
 
 import com.alibaba.fastjson.JSON;
-import com.common.ResponseResult;
+import com.domain.ResponseResult;
 import com.enums.AppHttpCodeEnum;
 import com.utils.WebUtils;
 import org.springframework.security.access.AccessDeniedException;

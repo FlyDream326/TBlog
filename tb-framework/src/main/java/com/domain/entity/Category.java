@@ -1,4 +1,4 @@
-package com.entity;
+package com.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -8,29 +8,27 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 /**
- * 友链(Link)表实体类
+ * 分类表(Category)表实体类
  *
  * @author makejava
- * @since 2023-03-10 12:14:16
+ * @since 2023-03-09 16:21:25
  */
 @SuppressWarnings("serial")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("sg_link")
-public class Link  {
+@TableName("sg_category")
+public class Category  {
     @TableId
     private Long id;
 
-    
+    //分类名
     private String name;
-    
-    private String logo;
-    
+    //父分类id，如果没有父分类为-1
+    private Long pid;
+    //描述
     private String description;
-    //网站地址
-    private String address;
-    //审核状态 (0代表审核通过，1代表审核未通过，2代表未审核)
+    //状态0:正常,1禁用
     private String status;
     
     private Long createBy;

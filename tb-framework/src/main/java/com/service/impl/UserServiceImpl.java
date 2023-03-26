@@ -3,15 +3,15 @@ package com.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.common.ResponseResult;
-import com.entity.User;
+import com.domain.ResponseResult;
+import com.domain.entity.User;
 import com.enums.AppHttpCodeEnum;
 import com.exception.SystemException;
 import com.mapper.UserMapper;
 import com.service.UserService;
 import com.utils.BeanCopyUtils;
 import com.utils.SecurityUtils;
-import com.vo.UserInfoVo;
+import com.domain.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

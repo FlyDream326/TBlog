@@ -1,7 +1,7 @@
 package com.runner;
 
 import com.constants.SystemConstants;
-import com.entity.Article;
+import com.domain.entity.Article;
 import com.mapper.ArticleMapper;
 import com.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;

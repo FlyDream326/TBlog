@@ -1,4 +1,4 @@
-package com.common;
+package com.domain;
 
 import com.enums.AppHttpCodeEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -1,7 +1,7 @@
 package com.fliter;
 
-import com.entity.LoginUser;
-import com.entity.User;
+import com.domain.entity.LoginUser;
+import com.domain.entity.User;
 import com.utils.JwtUtil;
 import com.utils.RedisCache;
 import io.jsonwebtoken.Claims;

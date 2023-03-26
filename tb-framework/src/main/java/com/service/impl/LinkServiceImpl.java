@@ -2,13 +2,13 @@ package com.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.common.ResponseResult;
+import com.domain.ResponseResult;
 import com.constants.SystemConstants;
-import com.entity.Link;
+import com.domain.entity.Link;
 import com.mapper.LinkMapper;
 import com.service.LinkService;
 import com.utils.BeanCopyUtils;
-import com.vo.LinkVo;
+import com.domain.vo.LinkVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

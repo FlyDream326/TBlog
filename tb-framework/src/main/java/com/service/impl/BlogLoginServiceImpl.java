@@ -1,14 +1,14 @@
 package com.service.impl;
 
-import com.common.ResponseResult;
-import com.entity.LoginUser;
-import com.entity.User;
+import com.domain.ResponseResult;
+import com.domain.entity.LoginUser;
+import com.domain.entity.User;
 import com.service.BlogLoginService;
 import com.utils.BeanCopyUtils;
 import com.utils.JwtUtil;
 import com.utils.RedisCache;
-import com.vo.BlogUserLoginVo;
-import com.vo.UserInfoVo;
+import com.domain.vo.BlogUserLoginVo;
+import com.domain.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

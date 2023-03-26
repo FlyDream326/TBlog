@@ -1,6 +1,6 @@
-package com.Controller;
+package com.controller;
 
-import com.common.ResponseResult;
+import com.domain.ResponseResult;
 import com.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

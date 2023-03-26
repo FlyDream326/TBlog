@@ -1,7 +1,7 @@
 package com.job;
 
 import com.constants.SystemConstants;
-import com.entity.Article;
+import com.domain.entity.Article;
 import com.service.ArticleService;
 import com.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component

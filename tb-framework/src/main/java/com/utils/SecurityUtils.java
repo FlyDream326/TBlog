@@ -1,6 +1,6 @@
 package com.utils;
 
-import com.entity.LoginUser;
+import com.domain.entity.LoginUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

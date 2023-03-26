@@ -1,8 +1,8 @@
-package com.Controller;
+package com.controller;
 
 import com.annotation.SystemLog;
-import com.common.ResponseResult;
-import com.entity.User;
+import com.domain.ResponseResult;
+import com.domain.entity.User;
 import com.enums.AppHttpCodeEnum;
 import com.exception.SystemException;
 import com.service.BlogLoginService;

@@ -1,6 +1,6 @@
 package com.service.impl;
 
-import com.common.ResponseResult;
+import com.domain.ResponseResult;
 import com.enums.AppHttpCodeEnum;
 import com.exception.SystemException;
 import com.google.gson.Gson;

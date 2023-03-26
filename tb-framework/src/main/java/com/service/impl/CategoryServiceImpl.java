@@ -3,15 +3,15 @@ package com.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.common.ResponseResult;
+import com.domain.ResponseResult;
 import com.constants.SystemConstants;
-import com.entity.Article;
-import com.entity.Category;
+import com.domain.entity.Article;
+import com.domain.entity.Category;
 import com.mapper.CategoryMapper;
 import com.service.ArticleService;
 import com.service.CategoryService;
 import com.utils.BeanCopyUtils;
-import com.vo.CategoryVo;
+import com.domain.vo.CategoryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
