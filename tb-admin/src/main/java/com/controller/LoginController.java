@@ -4,6 +4,7 @@ import com.annotation.SystemLog;
 import com.domain.ResponseResult;
 import com.domain.entity.User;
 import com.domain.vo.AdminUserInfoVo;
+import com.domain.vo.RoutersVo;
 import com.enums.AppHttpCodeEnum;
 import com.exception.SystemException;
 import com.service.LoginService;
@@ -38,5 +39,10 @@ public class LoginController {
     @PostMapping("/user/logout")
     public ResponseResult logout(){
         return loginService.logout();
+    }
+
+    @GetMapping("/getRouters")
+    public ResponseResult getRouters(){
+         return loginService.getRouters();
     }
 }

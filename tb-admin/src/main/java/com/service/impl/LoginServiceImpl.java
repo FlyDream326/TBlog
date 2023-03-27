@@ -3,8 +3,11 @@ package com.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.domain.ResponseResult;
 import com.domain.entity.LoginUser;
+import com.domain.entity.Menu;
 import com.domain.entity.User;
 import com.domain.vo.AdminUserInfoVo;
+import com.domain.vo.MenuVo;
+import com.domain.vo.RoutersVo;
 import com.domain.vo.UserInfoVo;
 import com.service.LoginService;
 import com.service.MenuService;
@@ -37,7 +40,6 @@ public class LoginServiceImpl implements LoginService {
     private MenuService menuService;
     @Autowired
     private RoleService roleService;
-
     @Override
     public ResponseResult login(User user) {
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -100,5 +102,15 @@ public class LoginServiceImpl implements LoginService {
         AdminUserInfoVo adminUserInfoVo = new AdminUserInfoVo(permsList,roleKeyList,userInfoVo);
 
         return ResponseResult.okResult(adminUserInfoVo);
+    }
+
+    @Override
+    public ResponseResult getRouters() {
+        Long userId = SecurityUtils.getUserId();
+        //查询menu 结果是tree的形式
+         List<MenuVo> menuVos = menuService.selectRouterMenuTreeByUserId(userId);
+
+        //封装数据返回
+        return ResponseResult.okResult(new RoutersVo(menuVos));
     }
 }

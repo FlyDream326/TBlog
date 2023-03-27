@@ -2,7 +2,7 @@ package com.domain.entity;
 
 import java.util.Date;
 
-import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @NoArgsConstructor
 @TableName("sys_menu")
 public class Menu  {
-    //菜单ID@TableId
+    //菜单ID
+    @TableId
     private Long id;
 
     //菜单名称
