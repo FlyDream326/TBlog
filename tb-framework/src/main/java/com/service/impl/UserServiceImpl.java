@@ -77,9 +77,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new SystemException(AppHttpCodeEnum.USERNAME_EXIST);
         }
         //对密码进行加密
-//        BCryptPasswordEncoder bCryptPasswordEncoder =
-//                new BCryptPasswordEncoder();
-//        String encode = bCryptPasswordEncoder.encode(user.getPassword());
         String encode = passwordEncoder.encode(user.getPassword());
         user.setPassword(encode);
         //存入数据库
