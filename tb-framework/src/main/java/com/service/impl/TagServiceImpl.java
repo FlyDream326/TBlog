@@ -72,8 +72,6 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
         LambdaUpdateWrapper<Tag> queryWrapper =
                 new LambdaUpdateWrapper<>();
         queryWrapper.eq(Tag::getId,tagVo.getId());
-        System.out.println(JSON.toJSON(tagVo));
-        System.out.println(JSON.toJSON(tag));
         tagMapper.updateById(tag);
         return ResponseResult.okResult();
     }
