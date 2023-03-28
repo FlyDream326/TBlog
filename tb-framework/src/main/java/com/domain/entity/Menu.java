@@ -3,6 +3,7 @@ package com.domain.entity;
 import java.util.Date;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -56,7 +57,7 @@ public class Menu  {
     private Date updateTime;
     //备注
     private String remark;
-    
+
     private String delFlag;
 
 

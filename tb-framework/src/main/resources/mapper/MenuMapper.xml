@@ -21,9 +21,7 @@
             DISTINCT
             m.id,m.parent_id,m.menu_name,m.path,m.component,m.visible,m.`status`,
             IFNULL(m.perms,'')AS perms,m.is_frame,m.menu_type,m.create_time,m.order_num
-        FROM `sys_user_role` ur
-                 LEFT JOIN sys_role_menu rm ON ur.role_id = rm.role_id
-                 LEFT JOIN sys_menu m       ON rm.menu_id=m.id
+        FROM sys_menu m
 
         WHERE
             m.menu_type IN('C','M') AND
@@ -35,9 +33,7 @@
             DISTINCT
             m.id,m.parent_id,m.menu_name,m.path,m.component,m.visible,m.`status`,
             IFNULL(m.perms,'')AS perms,m.is_frame,m.menu_type,m.create_time,m.order_num
-        FROM `sys_user_role` ur
-                 LEFT JOIN sys_role_menu rm ON ur.role_id = rm.role_id
-                 LEFT JOIN sys_menu m       ON rm.menu_id=m.id
+        FROM sys_menu m
 
         WHERE
             m.menu_type IN('C','M') AND
