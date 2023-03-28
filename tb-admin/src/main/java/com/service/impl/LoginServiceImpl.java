@@ -76,13 +76,10 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public ResponseResult logout() {
-        //获取token，解析userId
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         //获取userId
-        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
-        String id = loginUser.getUser().getId().toString();
+        String id = SecurityUtils.getUserId().toString();
         //删除redis中的用户信息
-        redisCache.deleteObject("blogLogin:"+id);
+        redisCache.deleteObject("Login:"+id);
 
         return ResponseResult.okResult(200,"退出成功！");
     }

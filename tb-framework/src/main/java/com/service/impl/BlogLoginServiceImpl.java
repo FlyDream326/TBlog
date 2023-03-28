@@ -9,6 +9,7 @@ import com.utils.JwtUtil;
 import com.utils.RedisCache;
 import com.domain.vo.BlogUserLoginVo;
 import com.domain.vo.UserInfoVo;
+import com.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,7 +37,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
             throw new RuntimeException("用户名或者密码错误");
         }
         //获取userId 生成token
-        LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
+        LoginUser loginUser = SecurityUtils.getLoginUser();
         String id = loginUser.getUser().getId().toString();
         String token = JwtUtil.createJWT(id);
         //把用户信息存入redis

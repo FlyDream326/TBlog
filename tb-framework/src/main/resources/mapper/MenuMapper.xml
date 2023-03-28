@@ -27,6 +27,8 @@
             m.menu_type IN('C','M') AND
             m.`status` = 0 AND
             m.del_flag = 0
+        ORDER BY
+            m.parent_id,m.order_num
     </select>
     <select id="selectRouterMenuByUserId" resultType="com.domain.entity.Menu">
         SELECT
@@ -40,6 +42,8 @@
             m.`status` = 0 AND
             m.del_flag = 0 AND
             ur.user_id = #{userId}
+        ORDER BY
+            m.parent_id,m.order_num
 
 
     </select>
