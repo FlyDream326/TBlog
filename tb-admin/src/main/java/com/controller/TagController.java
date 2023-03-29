@@ -4,6 +4,7 @@ package com.controller;
 import com.annotation.SystemLog;
 import com.domain.ResponseResult;
 import com.domain.dto.TagDto;
+import com.domain.vo.CategoryVo;
 import com.domain.vo.PageVo;
 import com.domain.vo.TagVo;
 import com.service.TagService;
@@ -24,7 +25,7 @@ public class TagController {
 
     @PutMapping("/{id}")
     @SystemLog(businessName = "updateTag")
-    public  ResponseResult updateTag(@RequestBody TagVo tagVo){
+    public  ResponseResult<TagVo> updateTag(@RequestBody TagVo tagVo){
         return tagService.updateTag(tagVo);
     }
     @PostMapping
@@ -40,6 +41,11 @@ public class TagController {
     @GetMapping("/{id}")
     public ResponseResult getTag(@PathVariable Long id){
         return tagService.getTag(id);
+    }
+
+    @GetMapping("/listAllTag")
+    public ResponseResult<TagVo> listAllTag(){
+        return tagService.listAllTag();
     }
 
 

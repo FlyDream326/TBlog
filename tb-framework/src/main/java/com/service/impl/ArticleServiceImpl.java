@@ -1,14 +1,18 @@
 package com.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.domain.ResponseResult;
 import com.constants.SystemConstants;
+import com.domain.dto.AddArticleDto;
 import com.domain.entity.Article;
+import com.domain.entity.ArticleTag;
 import com.domain.entity.Category;
 import com.mapper.ArticleMapper;
 import com.service.ArticleService;
+import com.service.ArticleTagService;
 import com.service.CategoryService;
 import com.utils.BeanCopyUtils;
 import com.utils.RedisCache;
@@ -18,6 +22,7 @@ import com.domain.vo.HotArticleVo;
 import com.domain.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +35,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private ArticleTagService articleTagService;
     @Override
     public ResponseResult hotArticleList() {
         //查询热门文章 封账成ResponseResult返回
@@ -118,5 +125,20 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         //更新文章的浏览量
         redisCache.incrementCacheValue(SystemConstants.ARTICLE_VIEWCOUNT,id.toString(),1);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    @Transactional
+    public ResponseResult addArticle(AddArticleDto dto) {
+        Article article = BeanCopyUtils.copyBean(dto, Article.class);
+        System.out.println("1");
+        save(article);
+        System.out.println("2");
+        List<ArticleTag> articleTagList = dto.getTags().stream()
+                .map(tag -> new ArticleTag(article.getId(), tag))
+                .collect(Collectors.toList());
+        articleTagService.saveBatch(articleTagList);
+        System.out.println(JSON.toJSON(article));
+        return ResponseResult.okResult() ;
     }
 }

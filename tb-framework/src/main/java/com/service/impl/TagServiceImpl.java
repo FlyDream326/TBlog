@@ -67,13 +67,23 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     }
 
     @Override
-    public ResponseResult updateTag(TagVo tagVo) {
+    public ResponseResult<TagVo> updateTag(TagVo tagVo) {
         Tag tag = BeanCopyUtils.copyBean(tagVo, Tag.class);
         LambdaUpdateWrapper<Tag> queryWrapper =
                 new LambdaUpdateWrapper<>();
         queryWrapper.eq(Tag::getId,tagVo.getId());
         tagMapper.updateById(tag);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult<TagVo> listAllTag() {
+        LambdaQueryWrapper<Tag> queryWrapper =
+                new LambdaQueryWrapper<>();
+        queryWrapper.select(Tag::getId,Tag::getName);
+        List<Tag> list = list(queryWrapper);
+        List<TagVo> tagVoList = BeanCopyUtils.copyBeanList(list, TagVo.class);
+        return ResponseResult.okResult(tagVoList);
     }
 }
 

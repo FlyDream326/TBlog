@@ -33,18 +33,15 @@ public class ResponseResult<T> implements Serializable {
     }
 
     public static ResponseResult errorResult(int code, String msg) {
-        ResponseResult result = new ResponseResult();
-        return result.error(code, msg);
+        return new ResponseResult().error(code, msg);
     }
 
     public static ResponseResult okResult() {
-        ResponseResult result = new ResponseResult();
-        return result;
+        return new ResponseResult();
     }
 
     public static ResponseResult okResult(int code, String msg) {
-        ResponseResult result = new ResponseResult();
-        return result.ok(code, null, msg);
+        return new ResponseResult().ok(code, null, msg);
     }
 
     public static ResponseResult okResult(Object data) {
