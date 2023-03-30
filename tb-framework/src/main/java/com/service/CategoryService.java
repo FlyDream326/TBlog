@@ -5,6 +5,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.domain.ResponseResult;
 import com.domain.entity.Category;
 import com.domain.vo.CategoryVo;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 
 /**
@@ -17,6 +21,8 @@ public interface CategoryService extends IService<Category> {
 
     ResponseResult getCategoryList();
 
-    ResponseResult<CategoryVo> listAllCategory();
+    List<CategoryVo> listAllCategory();
+
+    void export(HttpServletResponse response);
 }
 

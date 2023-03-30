@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/content/category")
 public class CategoryController {
@@ -18,8 +20,10 @@ public class CategoryController {
     private CategoryService categoryService;
     @GetMapping("/listAllCategory")
     public ResponseResult<CategoryVo> listAllCategory(){
-        return categoryService.listAllCategory();
+        return ResponseResult.okResult(categoryService.listAllCategory());
     }
-
-
+    @GetMapping("/export")
+    public void export(HttpServletResponse response){
+     categoryService.export(response);
+    }
 }
