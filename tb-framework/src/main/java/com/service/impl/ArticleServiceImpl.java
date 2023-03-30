@@ -7,9 +7,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.domain.ResponseResult;
 import com.constants.SystemConstants;
 import com.domain.dto.AddArticleDto;
+import com.domain.dto.AddCommentDto;
 import com.domain.entity.Article;
 import com.domain.entity.ArticleTag;
 import com.domain.entity.Category;
+import com.domain.entity.Tag;
 import com.mapper.ArticleMapper;
 import com.service.ArticleService;
 import com.service.ArticleTagService;
@@ -23,6 +25,7 @@ import com.domain.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -140,5 +143,32 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         articleTagService.saveBatch(articleTagList);
         System.out.println(JSON.toJSON(article));
         return ResponseResult.okResult() ;
+    }
+
+    @Override
+    public PageVo articleSearch(Integer pageNum, Integer pageSize, String title, String summary) {
+        LambdaQueryWrapper<Article> queryWrapper =
+                new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.hasText(title), Article::getTitle, title)
+                    .like(StringUtils.hasText(summary), Article::getSummary, summary);
+        Page<Article> page = new Page<>(pageNum,pageSize);
+        page(page,queryWrapper);
+        List<ArticleDetailVo> vos = BeanCopyUtils.copyBeanList(page.getRecords(), ArticleDetailVo.class);
+        return new PageVo(vos,page.getTotal());
+    }
+
+    @Override
+    public AddArticleDto articleUpdate(Long id) {
+        LambdaQueryWrapper<ArticleTag> queryWrapper =
+                new LambdaQueryWrapper<>();
+        queryWrapper.eq(ArticleTag::getArticleId,id);
+        List<ArticleTag> articleTagList = articleTagService.list(queryWrapper);
+        List<Long> list = articleTagList.stream()
+                .map(ArticleTag::getTagId)
+                .collect(Collectors.toList());
+        Article article = getById(id);
+        AddArticleDto dto = BeanCopyUtils.copyBean(article, AddArticleDto.class);
+        dto.setTags(list);
+        return dto;
     }
 }

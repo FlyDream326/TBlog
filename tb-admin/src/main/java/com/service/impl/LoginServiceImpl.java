@@ -51,6 +51,7 @@ public class LoginServiceImpl implements LoginService {
         }
         //获取userId 生成token
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
+        System.out.println("LoginUser: "+loginUser);
         String id = loginUser.getUser().getId().toString();
         String token = JwtUtil.createJWT(id);
         //把用户信息存入redis

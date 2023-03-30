@@ -5,6 +5,7 @@ import com.domain.vo.CategoryVo;
 import com.domain.vo.TagVo;
 import com.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ public class CategoryController {
         return ResponseResult.okResult(categoryService.listAllCategory());
     }
     @GetMapping("/export")
+    @PreAuthorize("@ps.hasPermission('content:category:export')")
     public void export(HttpServletResponse response){
      categoryService.export(response);
     }

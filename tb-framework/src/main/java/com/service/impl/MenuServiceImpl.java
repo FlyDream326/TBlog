@@ -26,19 +26,18 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public List<String> selectPermsByUserKey(Long userId) {
         //根据用户id 查询权限 如果是管理员返回全部权限 type: 1 管理员 0 普通用户
-        if (SecurityUtils.isAdmin()){
+        if (userId==1L){
             LambdaQueryWrapper<Menu> queryWrapper =
                     new LambdaQueryWrapper<>();
-            queryWrapper.in(Menu::getMenuType, SystemConstants.MENU,SystemConstants.BUTTON)
+            queryWrapper.in(Menu::getMenuType,SystemConstants.MENU,SystemConstants.BUTTON)
                         .eq(Menu::getStatus,SystemConstants.STATUS_NORMAL);
             List<Menu> menuList = list(queryWrapper);
             List<String> perms = menuList.stream()
-                    .map(Menu::getPerms)
-                    .collect(Collectors.toList());
+                                            .map(Menu::getPerms)
+                                            .collect(Collectors.toList());
             return perms;
         }
         //否则返回所具有的权限
-
         return getBaseMapper().selectPermsByUserKey(userId);
     }
 
