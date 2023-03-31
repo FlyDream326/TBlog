@@ -16,7 +16,8 @@ public enum AppHttpCodeEnum {
     USERNAME_NOT_NULL(508, "用户名不能为空"),
     NICKNAME_NOT_NULL(509, "昵称不能为空"),
     EMAIL_NOT_NULL(510, "邮箱不能为空"),
-    PASSWORD_NOT_NULL(511, "密码不能为空")
+    PASSWORD_NOT_NULL(511, "密码不能为空"),
+    MENU_NAME_EXIST(511, "菜单名称已存在"),
     ;
     int code;
     String msg;

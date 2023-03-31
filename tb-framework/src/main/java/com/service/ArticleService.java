@@ -18,7 +18,9 @@ public interface ArticleService extends IService<Article> {
 
     ResponseResult addArticle(AddArticleDto dto);
 
-    PageVo articleSearch(Integer pageNum, Integer pageSize, String title, String summary);
+    PageVo articleList(Integer pageNum, Integer pageSize, String title, String summary);
 
-    AddArticleDto articleUpdate(Long id);
+    AddArticleDto articleSearch(Long id);
+
+    void articleUpdate(AddArticleDto dto);
 }

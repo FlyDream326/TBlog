@@ -3,13 +3,16 @@ package com.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.constants.SystemConstants;
+import com.domain.ResponseResult;
 import com.domain.entity.Menu;
 import com.domain.vo.MenuVo;
+import com.enums.AppHttpCodeEnum;
 import com.mapper.MenuMapper;
 import com.service.MenuService;
 import com.utils.BeanCopyUtils;
 import com.utils.SecurityUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,6 +65,48 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 
         return menuTree;
     }
+
+    @Override
+    public List<Menu> menuList(String status, String menuName) {
+        /*需要展示菜单列表，不需要分页。
+        可以针对菜单名进行模糊查询
+        也可以针对菜单的状态进行查询。
+        菜单要按照父菜单id和orderNum进行排序
+         */
+        LambdaQueryWrapper<Menu> queryWrapper =
+                new LambdaQueryWrapper<>();
+        queryWrapper.eq(StringUtils.hasText(status), Menu::getStatus, status)
+                    .like(StringUtils.hasText(menuName), Menu::getMenuName, menuName);
+        queryWrapper.orderByAsc(true, Menu::getOrderNum,Menu::getParentId);
+        return list(queryWrapper);
+    }
+
+    @Override
+    public ResponseResult addMenu(Menu menu) {
+        //查询新增menu是否已存在
+        LambdaQueryWrapper<Menu> queryWrapper =
+                new LambdaQueryWrapper<>();
+        queryWrapper.eq(Menu::getMenuName,menu.getMenuName());
+        //存在 则返回已存在错误代码
+        if(count(queryWrapper)>0){
+            return ResponseResult.errorResult(AppHttpCodeEnum.MENU_NAME_EXIST);
+        }
+        //不存在 则新增
+        save(menu);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult deleteMenu(Long id) {
+        LambdaQueryWrapper<Menu> queryWrapper =
+                new LambdaQueryWrapper<>();
+        queryWrapper.eq(Menu::getParentId,id);
+        if(count(queryWrapper)>0){
+            return ResponseResult.errorResult(500,"存在子菜单不允许删除");
+        }
+        return ResponseResult.okResult();
+    }
+
 
     private List<MenuVo> buildMenuTree(List<MenuVo> menuVos, long parentId) {
         //先找出第一层的菜单 然后去找他们的子菜单设置到children属性中

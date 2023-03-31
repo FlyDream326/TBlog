@@ -13,6 +13,7 @@ import com.domain.entity.ArticleTag;
 import com.domain.entity.Category;
 import com.domain.entity.Tag;
 import com.mapper.ArticleMapper;
+import com.mapper.ArticleTagMapper;
 import com.service.ArticleService;
 import com.service.ArticleTagService;
 import com.service.CategoryService;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -35,9 +37,10 @@ import java.util.stream.Collectors;
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
     @Autowired
     private RedisCache redisCache;
+    @Resource
+    private ArticleTagMapper articleTagMapper;
     @Autowired
     private CategoryService categoryService;
-
     @Autowired
     private ArticleTagService articleTagService;
     @Override
@@ -134,19 +137,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Transactional
     public ResponseResult addArticle(AddArticleDto dto) {
         Article article = BeanCopyUtils.copyBean(dto, Article.class);
-        System.out.println("1");
         save(article);
-        System.out.println("2");
-        List<ArticleTag> articleTagList = dto.getTags().stream()
-                .map(tag -> new ArticleTag(article.getId(), tag))
-                .collect(Collectors.toList());
-        articleTagService.saveBatch(articleTagList);
-        System.out.println(JSON.toJSON(article));
+        List<ArticleTag> articleTag = getArticleTag(article.getId(), dto);
+        articleTagService.saveBatch(articleTag);
         return ResponseResult.okResult() ;
     }
 
     @Override
-    public PageVo articleSearch(Integer pageNum, Integer pageSize, String title, String summary) {
+    public PageVo articleList(Integer pageNum, Integer pageSize, String title, String summary) {
         LambdaQueryWrapper<Article> queryWrapper =
                 new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.hasText(title), Article::getTitle, title)
@@ -158,7 +156,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
-    public AddArticleDto articleUpdate(Long id) {
+    public AddArticleDto articleSearch(Long id) {
         LambdaQueryWrapper<ArticleTag> queryWrapper =
                 new LambdaQueryWrapper<>();
         queryWrapper.eq(ArticleTag::getArticleId,id);
@@ -170,5 +168,25 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         AddArticleDto dto = BeanCopyUtils.copyBean(article, AddArticleDto.class);
         dto.setTags(list);
         return dto;
+    }
+
+    @Override
+    public void articleUpdate(AddArticleDto dto) {
+        Article article = BeanCopyUtils.copyBean(dto, Article.class);
+        updateById(article);
+        /*
+         ArticleTag表在数据库中没有逻辑删除字段 需要绕过MP的逻辑删除
+         采用先删除后存储的方法解决
+         删除使用@Select注解在Mapper类中使用原生SQL语句注入
+         */
+        articleTagMapper.deleteByArticleId(article.getId());
+        articleTagService.saveBatch(getArticleTag(article.getId(),dto));
+    }
+
+    private List<ArticleTag> getArticleTag(Long id, AddArticleDto dto) {
+        List<ArticleTag> articleTagList = dto.getTags().stream()
+                .map(tag -> new ArticleTag(id, tag))
+                .collect(Collectors.toList());
+        return articleTagList;
     }
 }

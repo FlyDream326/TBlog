@@ -1,6 +1,7 @@
 package com.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.domain.ResponseResult;
 import com.domain.entity.Menu;
 import com.domain.vo.MenuVo;
 
@@ -18,5 +19,11 @@ public interface MenuService extends IService<Menu> {
     List<String> selectPermsByUserKey(Long userId);
 
     List<MenuVo> selectRouterMenuTreeByUserId(Long userId);
+
+    List<Menu> menuList(String status, String menuName);
+
+    ResponseResult addMenu(Menu menu);
+
+    ResponseResult deleteMenu(Long id);
 }
 
