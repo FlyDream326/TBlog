@@ -1,7 +1,9 @@
 package com.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.domain.dto.RoleDto;
 import com.domain.entity.Role;
+import com.domain.vo.PageVo;
 
 import java.util.List;
 
@@ -15,5 +17,9 @@ import java.util.List;
 public interface RoleService extends IService<Role> {
 
     List<String> selectRoleKeyByUserId(Long userId);
+
+    PageVo roleList(Integer pageNum, Integer pageSize, String roleName, String status);
+
+    void addRole(RoleDto dto);
 }
 

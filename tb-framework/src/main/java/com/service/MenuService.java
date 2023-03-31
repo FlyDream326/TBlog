@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.domain.ResponseResult;
 import com.domain.entity.Menu;
 import com.domain.vo.MenuVo;
+import com.domain.vo.MenuVoSimple;
 
 import java.util.List;
 
@@ -25,5 +26,7 @@ public interface MenuService extends IService<Menu> {
     ResponseResult addMenu(Menu menu);
 
     ResponseResult deleteMenu(Long id);
+
+    List<MenuVoSimple> menuTreeSelect();
 }
 

@@ -6,9 +6,11 @@ import com.constants.SystemConstants;
 import com.domain.ResponseResult;
 import com.domain.entity.Menu;
 import com.domain.vo.MenuVo;
+import com.domain.vo.MenuVoSimple;
 import com.enums.AppHttpCodeEnum;
 import com.mapper.MenuMapper;
 import com.service.MenuService;
+
 import com.utils.BeanCopyUtils;
 import com.utils.SecurityUtils;
 import org.springframework.stereotype.Service;
@@ -107,14 +109,34 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         return ResponseResult.okResult();
     }
 
+    @Override
+    public List<MenuVoSimple> menuTreeSelect() {
+        List<Menu> menuList = list();
+        List<MenuVoSimple> simples =
+                BeanCopyUtils.copyBeanList(menuList, MenuVoSimple.class);
+        List<MenuVoSimple> tree = simples.stream()
+                .filter(m -> m.getParentId().equals(0L))
+                .map(m -> m.setChildren(getSimplesChildren(simples, m.getId())))
+                .collect(Collectors.toList());
+        return tree;
+    }
+
+    private List<MenuVoSimple> getSimplesChildren(List<MenuVoSimple> simples, Long id) {
+        List<MenuVoSimple> tree = simples.stream()
+                .filter(s -> s.getParentId().equals(id))
+                .map(s -> s.setChildren(getSimplesChildren(simples, s.getId())))
+                .collect(Collectors.toList());
+        return tree;
+    }
+
 
     private List<MenuVo> buildMenuTree(List<MenuVo> menuVos, long parentId) {
         //先找出第一层的菜单 然后去找他们的子菜单设置到children属性中
         List<MenuVo> menuTree = menuVos.stream()
                 //寻找目录
-                .filter(menuVo -> menuVo.getParentId().equals(parentId))
+                .filter(m -> m.getParentId().equals(parentId))
                 //存放子菜单
-                .map(menuVo -> menuVo.setChildren(getChildren(menuVo, menuVos)))
+                .map(m -> m.setChildren(getChildren(m, menuVos)))
                 .collect(Collectors.toList());
         return menuTree;
     }
@@ -122,7 +144,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     private List<MenuVo> getChildren(MenuVo menuVo, List<MenuVo> menuVos) {
         List<MenuVo> collect = menuVos.stream()
                 //保留menuVo的children
-                .filter(menuVo1 -> menuVo1.getParentId().equals(menuVo.getId()))
+                .filter(m -> m.getParentId().equals(menuVo.getId()))
                 //继续存放children，若有则说明具有三级菜单
                 .map(m->m.setChildren(getChildren(m,menuVos)))
                 .collect(Collectors.toList());

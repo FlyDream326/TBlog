@@ -3,6 +3,7 @@ package com.controller;
 import com.annotation.SystemLog;
 import com.domain.ResponseResult;
 import com.domain.entity.Menu;
+import com.domain.vo.MenuVoSimple;
 import com.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,4 +42,9 @@ public class MenuController {
         return menuService.deleteMenu(id);
     }
 
+    @GetMapping("/treeselect")
+    public  ResponseResult menuTreeSelect(){
+      List<MenuVoSimple> menuTreeSelect = menuService.menuTreeSelect();
+        return ResponseResult.okResult(menuTreeSelect);
+    }
 }
