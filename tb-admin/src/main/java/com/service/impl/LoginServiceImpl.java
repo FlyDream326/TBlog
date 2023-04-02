@@ -52,10 +52,6 @@ public class LoginServiceImpl implements LoginService {
         //获取userId 生成token
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         System.out.println("LoginUser: "+loginUser);
-        String id = loginUser.getUser().getId().toString();
-        String token = JwtUtil.createJWT(id);
-        //把用户信息存入redis
-        redisCache.setCacheObject("Login:"+id,loginUser);
         //如果获取不到
         if(Objects.isNull(loginUser)){
             //提示重新登录
@@ -64,6 +60,10 @@ public class LoginServiceImpl implements LoginService {
 //            return null;
             System.out.println("loginUser: null");
         }
+        String id = loginUser.getUser().getId().toString();
+        String token = JwtUtil.createJWT(id);
+        //把用户信息存入redis
+        redisCache.setCacheObject("Login:"+id,loginUser);
         //把user转换成UserInfoVo
         UserInfoVo userInfoVo = BeanCopyUtils.copyBean(loginUser.getUser(), UserInfoVo.class);
 
