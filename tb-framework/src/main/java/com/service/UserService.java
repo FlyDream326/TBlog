@@ -2,7 +2,11 @@ package com.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.domain.ResponseResult;
+import com.domain.dto.AddUserDetailsDto;
+import com.domain.dto.AddUserDto;
 import com.domain.entity.User;
+import com.domain.vo.PageVo;
+import com.domain.vo.UserRoleDetailVo;
 
 
 /**
@@ -18,5 +22,13 @@ public interface UserService extends IService<User> {
     ResponseResult updateUserInfo(User user);
 
     ResponseResult register(User user);
+
+    PageVo userList(Integer pageNum, Integer pageSize, String userName, String phonenumber, String status);
+
+    void addUser(AddUserDto dto);
+
+    UserRoleDetailVo getUserDetailsId(Long id);
+
+    void updateUserDetails(AddUserDetailsDto dto);
 }
 

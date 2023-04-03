@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-@Service
+@Service("LoginService")
 public class LoginServiceImpl implements LoginService {
 
     @Autowired

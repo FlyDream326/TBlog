@@ -39,4 +39,10 @@ public class RoleController {
         roleService.addRole(dto);
     return ResponseResult.okResult();
     }
+    @DeleteMapping("/{id}")
+    public ResponseResult deleteRole(@PathVariable("id")Long id){
+        //逻辑删除角色
+        roleService.getBaseMapper().deleteById(id);
+    return ResponseResult.okResult();
+    }
 }
