@@ -3,8 +3,10 @@ package com.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.domain.ResponseResult;
+import com.domain.dto.AddCategoryDto;
 import com.domain.entity.Category;
 import com.domain.vo.CategoryVo;
+import com.domain.vo.PageVo;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,5 +26,13 @@ public interface CategoryService extends IService<Category> {
     List<CategoryVo> listAllCategory();
 
     void export(HttpServletResponse response);
+
+    PageVo categoryList(Integer pageNum, Integer pageSize, String name, String status);
+
+    void addCategory(AddCategoryDto dto);
+
+    CategoryVo getCategoryById(Long id);
+
+    void updateCategory(AddCategoryDto dto);
 }
 

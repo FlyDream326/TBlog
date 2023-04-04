@@ -1,19 +1,14 @@
-package com.domain.vo;
+package com.domain.dto;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LinkVo {
-    @TableId
-    private Long id;
-
-
+public class LinkDto {
     private String name;
 
     private String logo;

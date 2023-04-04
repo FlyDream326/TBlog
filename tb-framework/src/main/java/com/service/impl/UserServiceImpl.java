@@ -2,6 +2,7 @@ package com.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.constants.SystemConstants;
@@ -164,14 +165,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public void updateUserDetails(AddUserDetailsDto dto) {
         User user = BeanCopyUtils.copyBean(dto, User.class);
-        LambdaQueryWrapper<User> queryWrapper =
-                new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getId,user.getId());
-        update(user,queryWrapper);
+        LambdaUpdateWrapper<User> updateWrapper =
+                new LambdaUpdateWrapper<>();
+        updateWrapper.eq(User::getId,user.getId());
+        update(user,updateWrapper);
         List<UserRole> userRoles = dto.getRoleIds().stream()
                 .map(rids -> new UserRole(user.getId(), Long.valueOf(rids)))
                 .collect(Collectors.toList());
-        userRoleService.getBaseMapper().selectBatchIds(dto.getRoleIds());
+        LambdaQueryWrapper<UserRole> queryWrapper =
+                new LambdaQueryWrapper<>();
+        queryWrapper.eq(UserRole::getUserId,user.getId());
+        userRoleService.getBaseMapper().delete(queryWrapper);
         userRoleService.saveBatch(userRoles);
     }
 

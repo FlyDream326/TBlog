@@ -4,12 +4,15 @@ package com.service.impl;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.domain.ResponseResult;
 import com.constants.SystemConstants;
+import com.domain.dto.AddCategoryDto;
 import com.domain.entity.Article;
 import com.domain.entity.Category;
 import com.domain.vo.ExcelCategoryVo;
+import com.domain.vo.PageVo;
 import com.enums.AppHttpCodeEnum;
 import com.exception.SystemException;
 import com.mapper.CategoryMapper;
@@ -21,6 +24,7 @@ import com.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 
@@ -98,6 +102,55 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
 
         
+    }
+
+    @Override
+    public PageVo categoryList(Integer pageNum, Integer pageSize, String name, String status) {
+//        需要分页查询分类列表。
+//	能根据分类名称进行模糊查询。
+//	能根据状态进行查询。
+        LambdaQueryWrapper<Category> queryWrapper =
+                new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.hasText(name),Category::getName,name)
+                        .eq(StringUtils.hasText(status),Category::getStatus,status);
+        Page<Category> categoryPage = new Page<>(pageNum,pageSize);
+        page(categoryPage,queryWrapper);
+        List<CategoryVo> categoryVos = BeanCopyUtils.copyBeanList(categoryPage.getRecords(), CategoryVo.class);
+        return new PageVo(categoryVos,categoryPage.getTotal());
+    }
+
+    @Override
+    public void addCategory(AddCategoryDto dto) {
+        if(isCategoryExist(dto.getName())){
+           throw  new SystemException(AppHttpCodeEnum.CATEGORY_EXIST);
+        }
+        Category category = BeanCopyUtils.copyBean(dto, Category.class);
+        save(category);
+
+    }
+
+    @Override
+    public CategoryVo getCategoryById(Long id) {
+        LambdaQueryWrapper<Category> queryWrapper =
+                new LambdaQueryWrapper<>();
+        queryWrapper.eq(Category::getId,id)
+                .eq(Category::getStatus, SystemConstants.STATUS_NORMAL);
+        Category category = getOne(queryWrapper);
+        CategoryVo categoryVo = BeanCopyUtils.copyBean(category, CategoryVo.class);
+        return categoryVo;
+    }
+
+    @Override
+    public void updateCategory(AddCategoryDto dto) {
+        Category category = BeanCopyUtils.copyBean(dto, Category.class);
+        saveOrUpdate(category);
+    }
+
+    private boolean isCategoryExist(String name) {
+        LambdaQueryWrapper<Category> queryWrapper =
+                new LambdaQueryWrapper<>();
+        queryWrapper.eq(Category::getName,name);
+        return count(queryWrapper)>0;
     }
 }
 
