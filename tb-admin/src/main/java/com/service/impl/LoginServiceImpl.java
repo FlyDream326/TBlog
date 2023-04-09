@@ -1,9 +1,7 @@
 package com.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.domain.ResponseResult;
 import com.domain.entity.LoginUser;
-import com.domain.entity.Menu;
 import com.domain.entity.User;
 import com.domain.vo.AdminUserInfoVo;
 import com.domain.vo.MenuVo;
@@ -16,12 +14,10 @@ import com.utils.BeanCopyUtils;
 import com.utils.JwtUtil;
 import com.utils.RedisCache;
 import com.utils.SecurityUtils;
-import net.minidev.json.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
